@@ -44,7 +44,6 @@ class Referee:
         self.experienceInYears = 0
         self.refereePosition = ""
 
-
 class Tournament:
     def __init__(self):
         self.id = 0

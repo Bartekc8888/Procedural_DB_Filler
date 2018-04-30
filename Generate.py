@@ -15,10 +15,7 @@ TOURNAMENT_RANKS_FILE_NAME = "tournamentRanks.txt"
 NUMBER_OF_TEAMS_TO_GENERATE = 10
 
 def main():
-    t1 = DataStructures.Team()
-    t1.name = "Iskra Opole"
-
-    print(t1.name)
+    print("TODO")
 
 if __name__ == "__main__":
     main()
