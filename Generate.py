@@ -3,6 +3,8 @@ import GenerationFunctions
 
 import random
 import datetime
+import csv
+import os
 
 GENERATION_DATA_DIR = "GeneratorData"
 
@@ -30,7 +32,7 @@ MATCHES_OUTPUT = "matches.txt"
 MATCH_RESULTS_OUTPUT = "matchResults.txt"
 
 NUMBER_OF_TEAMS_TO_GENERATE = 10
-REFEREES_MULTIPLICATOR_NUMBER = 4 # REFEREES_MULTIPLICATOR_NUMBER * len(refereePositionsNames)
+REFEREES_MULTIPLICATOR_NUMBER = 3 # refCount = REFEREES_MULTIPLICATOR_NUMBER * len(refereePositionsNames) * len(torunamentRanks)
 TOURNAMENTS_NUMBER = 3
 
 citiesNames, maleNames, surnames, playerPositionsNames, refereePositionsNames, teamNames, tournamentNames, torunamentRanks = ([] for i in range(8))
@@ -40,6 +42,22 @@ def loadDataFromFile(filePath):
     with open(filePath, encoding="utf8") as file:
         lines = file.read().splitlines()
         return lines
+
+def writeGeneratedDataToFile(filePath, data):
+    with open(filePath, "w", newline='') as csv_file:
+        writer = csv.writer(csv_file, delimiter=',')
+        for line in data:
+            writer.writerow(line)
+
+def getmatchingReferees(tournamentRank):
+    refs = []
+    for counter in range(len(refereePositionsNames)):
+        referee = random.choice(referees)
+        while (referee.refereePosition != refereePositionsNames[counter]) or (referee.tournamentRank != tournamentRank) or (referee in refs):
+            referee = random.choice(referees)
+        refs.append(referee)
+    
+    return refs
 
 def initGenerationData():
     global citiesNames, maleNames, surnames, playerPositionsNames, refereePositionsNames, teamNames, tournamentNames, torunamentRanks
@@ -71,7 +89,7 @@ def createTeams():
             teamPlayers.append(GenerationFunctions.generateTeamPlayer(personId, teamId, usedTshirtNumbers))
             usedTshirtNumbers.append(teamPlayers[-1].tshirtNumber)
 
-        coachId = len(peoples)
+        coachId = len(peoples) + 1
         peoples.append(GenerationFunctions.generatePerson(coachId, maleNames, surnames, True))
         coaches.append(GenerationFunctions.generateCoach(coachId, teamId, peoples[-1].age))
 
@@ -81,9 +99,13 @@ def createReferees():
     peoplesCount = len(peoples)
     for refereeCounter in range(REFEREES_MULTIPLICATOR_NUMBER):
         for positionCounter in range(len(refereePositionsNames)):
-            personId = peoplesCount + refereeCounter * len(refereePositionsNames) + positionCounter
-            peoples.append(GenerationFunctions.generatePerson(personId, maleNames, surnames, True))
-            referees.append(GenerationFunctions.generateReferee(personId, torunamentRanks, refereePositionsNames))
+            for rankCounter in range(len(torunamentRanks)):
+                personId = peoplesCount + refereeCounter * (len(refereePositionsNames) * len(refereePositionsNames)) + positionCounter * len(refereePositionsNames) + rankCounter + 1
+                peoples.append(GenerationFunctions.generatePerson(personId, maleNames, surnames, True))
+
+                rank = torunamentRanks[rankCounter]
+                position = refereePositionsNames[positionCounter]
+                referees.append(GenerationFunctions.generateReferee(personId, rank, position))
 
 def createTournaments():
     global cities, peoples, playerPositions, players, teams, coaches, teamPlayers, referees, tournaments, matches, matchResults
@@ -92,23 +114,15 @@ def createTournaments():
         tournamentId = tournamentCounter + 1
         tournaments.append(GenerationFunctions.generateTournament(tournamentId, tournamentNames, torunamentRanks))
 
-        startDate = datetime.date.today() - datetime.timedelta(days=5*365)
+        startDate = GenerationFunctions.randomDate(datetime.date.today() - datetime.timedelta(days=5*365), datetime.date.today() - datetime.timedelta(days=120))
         endDate = startDate + datetime.timedelta(days=65)
-
-        refs = []
-        
-        for counter in range(len(refereePositionsNames)):
-            referee = random.choice(referees)
-            while referee.refereePosition != refereePositionsNames[counter]:
-                #nonlocal referee
-                referee = random.choice(referees)
-
-            refs.append(referee)
 
         matchesCount = len(matches)
         for matchCounter in range(len(teams)):
             for opponentCounter in range(len(teams)):
-                matchId = matchesCount + matchCounter + opponentCounter + 1
+                matchId = matchesCount + matchCounter * len(teams) + opponentCounter + 1
+                refs = getmatchingReferees(tournaments[-1].rank)
+
                 matches.append(GenerationFunctions.generateMatch(matchId, tournamentId, teams[matchCounter], teams[opponentCounter],
                                                                 refs[0].personId, refs[1].personId, refs[2].personId, startDate, endDate))
                 matchResults.append(GenerationFunctions.generateMatchResult(matches[-1]))
@@ -126,7 +140,20 @@ def generateData():
 def writeData():
     global cities, peoples, playerPositions, players, teams, coaches, teamPlayers, referees, tournaments, matches, matchResults
 
-    pass
+    if not os.path.exists(GENERATED_DATA_DIR):
+        os.makedirs(GENERATED_DATA_DIR)
+
+    writeGeneratedDataToFile(GENERATED_DATA_DIR + '/' + CITIES_OUTPUT, cities)
+    writeGeneratedDataToFile(GENERATED_DATA_DIR + '/' + PEOPLES_OUTPUT, peoples)
+    writeGeneratedDataToFile(GENERATED_DATA_DIR + '/' + PLAYERS_POSITIONS_OUTPUT, playerPositions)
+    writeGeneratedDataToFile(GENERATED_DATA_DIR + '/' + PLAYERS_OUTPUT, players)
+    writeGeneratedDataToFile(GENERATED_DATA_DIR + '/' + TEAMS_OUTPUT, teams)
+    writeGeneratedDataToFile(GENERATED_DATA_DIR + '/' + COACHES_OUTPUT, coaches)
+    writeGeneratedDataToFile(GENERATED_DATA_DIR + '/' + TEAM_PLAYERS_OUTPUT, teamPlayers)
+    writeGeneratedDataToFile(GENERATED_DATA_DIR + '/' + REFEREES_OUTPUT, referees)
+    writeGeneratedDataToFile(GENERATED_DATA_DIR + '/' + TOURNAMENTS_OUTPUT, tournaments)
+    writeGeneratedDataToFile(GENERATED_DATA_DIR + '/' + MATCHES_OUTPUT, matches)
+    writeGeneratedDataToFile(GENERATED_DATA_DIR + '/' + MATCH_RESULTS_OUTPUT, matchResults)
 
 def main():
     initGenerationData()

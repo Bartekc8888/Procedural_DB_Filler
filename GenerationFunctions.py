@@ -66,7 +66,6 @@ def generateTeamPlayer(playerId : int, teamId : int, usedTShirtNumbers : List[in
 
     chosenNumber = random.randint(1, 99)
     while chosenNumber in usedTShirtNumbers:
-        #nonlocal chosenNumber
         chosenNumber = random.randint(1, 99)
     teamPlayer.tshirtNumber = chosenNumber
 
@@ -84,22 +83,21 @@ def generateTeamPlayer(playerId : int, teamId : int, usedTShirtNumbers : List[in
 
 def generateCoach(personId : int, teamId : int, personAge : int):
     coach = DataStructures.Coach()
-    coach.personId = personId
+    coach.id = personId
     coach.teamId = teamId
 
     yearsOfExperience = 0
     if (personAge - 18) > 1:
-        #nonlocal yearsOfExperience
         yearsOfExperience = random.randint(1, personAge - 18)
     coach.experienceInYears = yearsOfExperience
 
     return coach
 
-def generateReferee(personId : int, tournamentRanks : List[str], refereePositions : List[str]):
+def generateReferee(personId : int, tournamentRank : str, refereePosition : str):
     referee = DataStructures.Referee()
     referee.personId = personId
-    referee.tournamentRank = random.choice(tournamentRanks)
-    referee.refereePosition = random.choice(refereePositions)
+    referee.tournamentRank = tournamentRank
+    referee.refereePosition = refereePosition
 
     return referee
 
@@ -132,7 +130,7 @@ def generateMatchResult(match : DataStructures.Match):
         matchResult.winnerId = match.team1Id
     else:
         matchResult.winnerId = match.team2Id
-    matchResult.points = random.randint(2, 6)
+    matchResult.points = random.randint(2, 5)
 
     return matchResult
 
