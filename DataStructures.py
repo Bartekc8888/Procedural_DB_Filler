@@ -29,6 +29,12 @@ class Team:
         self.name = 0
         self.cityId = 0
 
+class Coach:
+    def __init__(self):
+        self.id = 0
+        self.teamId = 0
+        self.experienceInYears = 0
+
 class TeamPlayer:
     def __init__(self):
         self.teamId = 0
@@ -40,8 +46,7 @@ class TeamPlayer:
 class Referee:
     def __init__(self):
         self.personId = 0
-        self.teamId = 0
-        self.experienceInYears = 0
+        self.tournamentRank = ""
         self.refereePosition = ""
 
 class Tournament:
