@@ -1,4 +1,4 @@
-import DataStructures
+import Functions.DataStructures as DataStructures
 import random
 import datetime
 from typing import List
@@ -19,10 +19,16 @@ def generatePerson(personId : int, maleNames : List[str], surnames : List[str], 
     person.id = personId
     person.name = random.choice(maleNames)
     person.surname = random.choice(surnames)
+
+    age = 0
     if isOld:
-        person.age = random.randint(30, 65)
+        age = random.randint(30, 65)
     else:
-        person.age = random.randint(18, 35)
+        age = random.randint(18, 35)
+
+    birthDate = datetime.date.today() - datetime.timedelta(days=age*365)
+    birthDate = randomDate(birthDate, birthDate + datetime.timedelta(days=365))
+    person.birthDate = birthDate
     person.salary = random.randint(2100, 3200)
 
     return person
@@ -89,7 +95,9 @@ def generateCoach(personId : int, teamId : int, personAge : int):
     yearsOfExperience = 0
     if (personAge - 18) > 1:
         yearsOfExperience = random.randint(1, personAge - 18)
-    coach.experienceInYears = yearsOfExperience
+    
+    startOfCareer = datetime.date.today() - datetime.timedelta(days=yearsOfExperience*365)
+    coach.startOfCareer = startOfCareer
 
     return coach
 

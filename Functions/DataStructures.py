@@ -13,11 +13,11 @@ class Person:
         self.id = 0
         self.name = ""
         self.surname = ""
-        self.age = 0
+        self.birthDate = 0
         self.salary = 0
 
     def __iter__(self):
-        return iter([self.id, self.name, self.surname, self.age, self.salary])
+        return iter([self.id, self.name, self.surname, self.birthDate, self.salary])
 
 class PlayerPosition:
     def __init__(self):
@@ -48,10 +48,10 @@ class Coach:
     def __init__(self):
         self.id = 0
         self.teamId = 0
-        self.experienceInYears = 0
+        self.startOfCareer = datetime.date.today()
 
     def __iter__(self):
-        return iter([self.id, self.teamId, self.experienceInYears])
+        return iter([self.id, self.teamId, self.startOfCareer])
 
 class TeamPlayer:
     def __init__(self):
@@ -62,7 +62,7 @@ class TeamPlayer:
         self.contractEndDate = datetime.date.today()
 
     def __iter__(self):
-        return iter([self.teamId, self.playerId, self.tshirtNumber, self.contractStartDate, self.contractEndDate])
+        return iter([self.playerId, self.teamId, self.tshirtNumber, self.contractStartDate, self.contractEndDate])
 
 class Referee:
     def __init__(self):

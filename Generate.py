@@ -1,5 +1,5 @@
-import DataStructures
-import GenerationFunctions
+import Functions.DataStructures as DataStructures
+import Functions.GenerationFunctions as GenerationFunctions
 
 import random
 import datetime
@@ -44,7 +44,7 @@ def loadDataFromFile(filePath):
         return lines
 
 def writeGeneratedDataToFile(filePath, data):
-    with open(filePath, "w", newline='') as csv_file:
+    with open(filePath, "w", newline='', encoding="utf8") as csv_file:
         writer = csv.writer(csv_file, delimiter=',')
         for line in data:
             writer.writerow(line)
@@ -91,7 +91,7 @@ def createTeams():
 
         coachId = len(peoples) + 1
         peoples.append(GenerationFunctions.generatePerson(coachId, maleNames, surnames, True))
-        coaches.append(GenerationFunctions.generateCoach(coachId, teamId, peoples[-1].age))
+        coaches.append(GenerationFunctions.generateCoach(coachId, teamId, datetime.date.today().year - peoples[-1].birthDate.year))
 
 def createReferees():
     global cities, peoples, playerPositions, players, teams, coaches, teamPlayers, referees, tournaments, matches, matchResults
@@ -159,8 +159,6 @@ def main():
     initGenerationData()
     generateData()
     writeData()
-
-    print("TODO")
 
 if __name__ == "__main__":
     main()
