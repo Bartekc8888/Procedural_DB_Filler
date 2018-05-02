@@ -5,6 +5,7 @@ import random
 import datetime
 import csv
 import os
+import argparse
 
 GENERATION_DATA_DIR = "GeneratorData"
 
@@ -156,6 +157,18 @@ def writeData():
     writeGeneratedDataToFile(GENERATED_DATA_DIR + '/' + MATCH_RESULTS_OUTPUT, matchResults)
 
 def main():
+    global NUMBER_OF_TEAMS_TO_GENERATE, TOURNAMENTS_NUMBER
+
+    parser = argparse.ArgumentParser()
+    parser.add_argument("-t", "--teams", help="number of team to generate", type=int)
+    parser.add_argument("-m", "--tournaments", help="number of Tournaments to generate", type=int)
+    
+    args = parser.parse_args()
+    if args.teams and args.teams > 1:
+        NUMBER_OF_TEAMS_TO_GENERATE = args.teams
+    if args.tournaments and args.tournaments > 0:
+        TOURNAMENTS_NUMBER = args.tournaments
+
     initGenerationData()
     generateData()
     writeData()

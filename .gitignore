@@ -2,3 +2,6 @@
 output/
 __pycache__/
 .vscode
+dist/
+build/
+*.spec
