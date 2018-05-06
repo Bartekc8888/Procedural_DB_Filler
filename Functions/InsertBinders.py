@@ -44,7 +44,7 @@ def coachBind(listOfValues):
 
 def teamPlayerBind(listOfValues):
     dictionary = {}
-    dictionary["id_osoby"] = listOfValues[0]
+    dictionary["id_zawodnika"] = listOfValues[0]
     dictionary["id_druzyny"] = listOfValues[1]
     dictionary["numer_koszulki"] = listOfValues[2]
     dictionary["poczatek_kontraktu"] = listOfValues[3]
@@ -85,7 +85,7 @@ def matchBind(listOfValues):
 def matchResultBind(listOfValues):
     dictionary = {}
     dictionary["id_meczu"] = listOfValues[0]
-    dictionary["id_zwyciezcy"] = listOfValues[1]
+    dictionary["zwyciezca"] = listOfValues[1]
     dictionary["punkty"] = listOfValues[2]
 
     return dictionary

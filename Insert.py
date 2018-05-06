@@ -67,7 +67,7 @@ def main():
         insert(connection, metaData, GENERATED_DATA_DIR + '/' + REFEREES_OUTPUT, "sedziowie", InsertBinders.refereeBind)
         insert(connection, metaData, GENERATED_DATA_DIR + '/' + TOURNAMENTS_OUTPUT, "turnieje", InsertBinders.tournamentBind)
         insert(connection, metaData, GENERATED_DATA_DIR + '/' + MATCHES_OUTPUT, "mecze", InsertBinders.matchBind)
-        insert(connection, metaData, GENERATED_DATA_DIR + '/' + MATCH_RESULTS_OUTPUT, "wyniki_meczow", InsertBinders.matchResultBind)
+        insert(connection, metaData, GENERATED_DATA_DIR + '/' + MATCH_RESULTS_OUTPUT, "wyniki", InsertBinders.matchResultBind)
 
 if __name__ == "__main__":
     main()
