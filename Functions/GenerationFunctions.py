@@ -14,11 +14,12 @@ def generateCities(citiesNames : List[str]):
 
     return citiesList
 
-def generatePerson(personId : int, maleNames : List[str], surnames : List[str], isOld : bool):
+def generatePerson(personId : int, maleNames : List[str], surnames : List[str], roles : List[str], isOld : bool):
     person = DataStructures.Person()
     person.id = personId
     person.name = random.choice(maleNames)
     person.surname = random.choice(surnames)
+    person.roleId = random.randint(2, len(roles))
 
     age = 0
     if isOld:
@@ -36,6 +37,13 @@ def generatePerson(personId : int, maleNames : List[str], surnames : List[str], 
 def generatePlayerPositions(positionNames : List[str]):
     positionsList = []
 
+    positionsList.append(DataStructures.PlayerPosition())
+    positionsList[0].id = 1
+    positionsList[0].name = "Trener"
+    positionsList.append(DataStructures.PlayerPosition())
+    positionsList[1].id = 2
+    positionsList[1].name = "Sedzia"
+
     for name in positionNames:
         positionsList.append(DataStructures.PlayerPosition())
         id = len(positionsList)
@@ -43,13 +51,6 @@ def generatePlayerPositions(positionNames : List[str]):
         positionsList[id - 1].name = name
     
     return positionsList
-
-def generatePlayer(personId : int, positions : List[DataStructures.PlayerPosition]):
-    player = DataStructures.Player()
-    player.personId = personId
-    player.playerPositionId = random.choice(positions).id
-
-    return player
 
 def generateTeam(teamId : int, teamNames : List[str], cities : List[DataStructures.City]):
     team = DataStructures.Team()
@@ -65,15 +66,10 @@ def randomDate(start, end):
     random_second = random.randrange(int_delta)
     return start + datetime.timedelta(seconds=random_second)
 
-def generateTeamPlayer(playerId : int, teamId : int, usedTShirtNumbers : List[int]):
+def generateTeamPlayer(playerId : int, teamId : int):
     teamPlayer = DataStructures.TeamPlayer()
     teamPlayer.playerId = playerId
     teamPlayer.teamId = teamId
-
-    chosenNumber = random.randint(1, 99)
-    while chosenNumber in usedTShirtNumbers:
-        chosenNumber = random.randint(1, 99)
-    teamPlayer.tshirtNumber = chosenNumber
 
     dateStart = datetime.date.today() - datetime.timedelta(days=3*365)
     dateEnd = datetime.date.today() - datetime.timedelta(days=1)
@@ -87,46 +83,27 @@ def generateTeamPlayer(playerId : int, teamId : int, usedTShirtNumbers : List[in
 
     return teamPlayer
 
-def generateCoach(personId : int, teamId : int, personAge : int):
-    coach = DataStructures.Coach()
-    coach.id = personId
-    coach.teamId = teamId
+def generateCoach(person, teamId : int):
+    person.salary = person.salary + 1400 
+    person.birthDate = person.birthDate - datetime.timedelta(days=10*365)
+    person.roleId = 1
 
-    yearsOfExperience = 0
-    if (personAge - 18) > 1:
-        yearsOfExperience = random.randint(1, personAge - 18)
-    
-    startOfCareer = datetime.date.today() - datetime.timedelta(days=yearsOfExperience*365)
-    coach.startOfCareer = startOfCareer
+    generateTeamPlayer(person.id, teamId)
 
-    return coach
+    return person
 
-def generateReferee(personId : int, tournamentRank : str, refereePosition : str):
-    referee = DataStructures.Referee()
-    referee.personId = personId
-    referee.tournamentRank = tournamentRank
-    referee.refereePosition = refereePosition
+def generateReferee(person):
+    person.roleId = 2
 
-    return referee
+    return person
 
-def generateTournament(tournamentId : int, tournamentNames : List[str], tournamentRanks : List[str]):
-    tournament = DataStructures.Tournament()
-    tournament.id = tournamentId
-    tournament.name = random.choice(tournamentNames)
-    tournament.rank = random.choice(tournamentRanks)
-
-    return tournament
-
-def generateMatch(matchId : int, tournamentId : int, team1 : DataStructures.Team, team2 : DataStructures.Team, referee1Id : int, referee2Id : int, referee3Id : int, startDate, endDate):
+def generateMatch(matchId : int, team1 : DataStructures.Team, team2 : DataStructures.Team, refereeId : int, startDate, endDate):
     match = DataStructures.Match()
     match.id = matchId
-    match.tournamentId = tournamentId
     match.team1Id = team1.id
     match.team2Id = team2.id
     match.cityId = team1.cityId
-    match.referee1Id = referee1Id
-    match.referee2Id = referee2Id
-    match.referee3Id = referee3Id
+    match.refereeId = refereeId
     match.date = randomDate(startDate, endDate)
 
     return match

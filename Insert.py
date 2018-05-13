@@ -15,12 +15,8 @@ GENERATED_DATA_DIR = "output"
 CITIES_OUTPUT = "cities.txt"
 PEOPLES_OUTPUT = "peoples.txt"
 PLAYERS_POSITIONS_OUTPUT = "playerPositions.txt"
-PLAYERS_OUTPUT = "players.txt"
 TEAMS_OUTPUT = "teams.txt"
-COACHES_OUTPUT = "coaches.txt"
 TEAM_PLAYERS_OUTPUT = "teamPlayers.txt"
-REFEREES_OUTPUT = "referees.txt"
-TOURNAMENTS_OUTPUT = "tournaments.txt"
 MATCHES_OUTPUT = "matches.txt"
 MATCH_RESULTS_OUTPUT = "matchResults.txt"
 
@@ -58,14 +54,10 @@ def main():
         metaData = sqlalchemy.MetaData(dbEngine)
 
         insert(connection, metaData, GENERATED_DATA_DIR + '/' + CITIES_OUTPUT, "miasta", InsertBinders.cityBind)
+        insert(connection, metaData, GENERATED_DATA_DIR + '/' + PLAYERS_POSITIONS_OUTPUT, "role", InsertBinders.playerPositionBind)
         insert(connection, metaData, GENERATED_DATA_DIR + '/' + PEOPLES_OUTPUT, "osoby", InsertBinders.personBind)
-        insert(connection, metaData, GENERATED_DATA_DIR + '/' + PLAYERS_POSITIONS_OUTPUT, "pozycje", InsertBinders.playerPositionBind)
-        insert(connection, metaData, GENERATED_DATA_DIR + '/' + PLAYERS_OUTPUT, "zawodnicy", InsertBinders.playerBind)
         insert(connection, metaData, GENERATED_DATA_DIR + '/' + TEAMS_OUTPUT, "druzyny", InsertBinders.teamBind)
-        insert(connection, metaData, GENERATED_DATA_DIR + '/' + COACHES_OUTPUT, "trenerzy", InsertBinders.coachBind)
-        insert(connection, metaData, GENERATED_DATA_DIR + '/' + TEAM_PLAYERS_OUTPUT, "zawodnicy_druzyny", InsertBinders.teamPlayerBind)
-        insert(connection, metaData, GENERATED_DATA_DIR + '/' + REFEREES_OUTPUT, "sedziowie", InsertBinders.refereeBind)
-        insert(connection, metaData, GENERATED_DATA_DIR + '/' + TOURNAMENTS_OUTPUT, "turnieje", InsertBinders.tournamentBind)
+        insert(connection, metaData, GENERATED_DATA_DIR + '/' + TEAM_PLAYERS_OUTPUT, "osoby_druzyny", InsertBinders.teamPlayerBind)
         insert(connection, metaData, GENERATED_DATA_DIR + '/' + MATCHES_OUTPUT, "mecze", InsertBinders.matchBind)
         insert(connection, metaData, GENERATED_DATA_DIR + '/' + MATCH_RESULTS_OUTPUT, "wyniki", InsertBinders.matchResultBind)
 
