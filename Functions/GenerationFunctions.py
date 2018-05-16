@@ -19,7 +19,7 @@ def generatePerson(personId : int, maleNames : List[str], surnames : List[str], 
     person.id = personId
     person.name = random.choice(maleNames)
     person.surname = random.choice(surnames)
-    person.roleId = random.randint(2, len(roles))
+    person.roleId = random.randint(3, len(roles))
 
     age = 0
     if isOld:
