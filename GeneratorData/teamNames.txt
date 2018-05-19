@@ -46,14 +46,14 @@ MUKS Sparta Warszawa
 UMKS MOS Wola Warszawa
 KS Żyrardowianka Żyrardów
 KS Zawkrze Mława
-AZS Lingwistyczna Szkoła Wyższa Warszawa
+AZS Lingwistyczna Wyższa Warszawa
 Imtech AZS Politechnika Warszawska
 AZS AWF UKSW Warszawa
 LKS Perła Złotokłos
 PMKS Nike Węgrów
 Stal AZS PWSZ Nysa
 Juvenia Wakment Głuchołazy
-AZS Politechnika Opolska-Cementownia Odra
+AZS Politechnika Opolska
 SMS LO2 Opole
 KPSK Stal Mielec
 MKS Wisłok Strzyżów
@@ -83,7 +83,7 @@ TS Volley Rybnik
 SPS Politechnika Częstochowska
 PLKS Pszczyna
 Sokół 43 AZS AWF Katowice
-Silesia Volley II Sokół Chorzów/Mysłowice
+Silesia Volley II
 SMS PZPS II Sosnowiec
 MCKiS Cargo Jaworzno
 KŚ AZS Politechniki Śląskiej Gliwice

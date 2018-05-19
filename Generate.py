@@ -75,6 +75,7 @@ def createTeams():
         coachId = len(peoples) + 1
         peoples.append(GenerationFunctions.generatePerson(coachId, maleNames, surnames, playerPositionsNames, True))
         coaches.append(GenerationFunctions.generateCoach(peoples[-1], teamId))
+        teamPlayers.append(GenerationFunctions.generateTeamPlayer(coachId, teamId))
 
 def createReferees():
     global cities, peoples, playerPositions, teams, coaches, teamPlayers, referees, matches, matchResults
