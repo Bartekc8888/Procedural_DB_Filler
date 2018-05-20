@@ -101,8 +101,8 @@ def createReferees():
 def createTournaments():
     global cities, peoples, playerPositions, teams, coaches, teamPlayers, referees, matches, matchResults
 
-    startDate = GenerationFunctions.randomDate(datetime.date.today() - datetime.timedelta(days=5*365), datetime.date.today() - datetime.timedelta(days=120))
-    endDate = startDate + datetime.timedelta(days=65)
+    startDate = GenerationFunctions.randomDate(datetime.date.today() - datetime.timedelta(days=50), datetime.date.today() - datetime.timedelta(days=30))
+    endDate = startDate + datetime.timedelta(days=85)
 
     for matchCounter in range(len(teams)):
         for opponentCounter in range(len(teams)):
@@ -112,8 +112,12 @@ def createTournaments():
             matchId = len(matches) + 1
             refs = getmatchingReferees()
 
+            chosenDate = GenerationFunctions.randomDate(startDate, endDate)
             matches.append(GenerationFunctions.generateMatch(matchId, teams[matchCounter], teams[opponentCounter],
-                                                            refs.id, startDate, endDate))
+                                                            refs.id, chosenDate))
+            
+            if chosenDate > datetime.date.today():
+                continue
             matchResults.append(GenerationFunctions.generateMatchResult(matches[-1]))
 
 def generateData():

@@ -100,14 +100,14 @@ def generateReferee(person):
 
     return person
 
-def generateMatch(matchId : int, team1 : DataStructures.Team, team2 : DataStructures.Team, refereeId : int, startDate, endDate):
+def generateMatch(matchId : int, team1 : DataStructures.Team, team2 : DataStructures.Team, refereeId : int, date):
     match = DataStructures.Match()
     match.id = matchId
     match.team1Id = team1.id
     match.team2Id = team2.id
     match.cityId = team1.cityId
     match.refereeId = refereeId
-    match.date = randomDate(startDate, endDate)
+    match.date = date
 
     return match
 
