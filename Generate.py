@@ -29,6 +29,9 @@ MATCH_RESULTS_OUTPUT = "matchResults.txt"
 NUMBER_OF_TEAMS_TO_GENERATE = 10
 REFEREES_NUMBER = 5
 
+CoachPositionId = 1
+RefereePositionId = 2
+
 citiesNames, maleNames, surnames, playerPositionsNames, teamNames = ([] for i in range(5))
 cities, peoples, playerPositions, teams, coaches, teamPlayers, referees, matches, matchResults = ([] for i in range(9))
 
@@ -58,22 +61,31 @@ def initGenerationData():
     teamNames = loadDataFromFile(GENERATION_DATA_DIR + '/' + TEAM_NAMES_FILE_NAME)
 
 def createTeams():
-    global cities, peoples, playerPositions, teams, coaches, teamPlayers, referees, matches, matchResults
+    global cities, peoples, playerPositions, playerPositionsNames, teams, coaches, teamPlayers, referees, matches, matchResults
+
+    alreadyUsedTeamNames = []
 
     for teamCounter in range(NUMBER_OF_TEAMS_TO_GENERATE):
         teamId = teamCounter + 1
-        teams.append(GenerationFunctions.generateTeam(teamId, teamNames, cities))
+        teams.append(GenerationFunctions.generateTeam(teamId, teamNames, alreadyUsedTeamNames, cities))
+        alreadyUsedTeamNames.append(teams[-1].name)
 
-        numberOfPlayersInTeam = random.randint(6, 11)
+        numberOfPlayersInTeam = len(playerPositionsNames) + random.randint(0, 4)
         peoplesCount = len(peoples)
         for playerId in range(numberOfPlayersInTeam):
             personId = peoplesCount + playerId + 1
-            peoples.append(GenerationFunctions.generatePerson(personId, maleNames, surnames, playerPositionsNames, False))
+            positionId = 0
+            if playerId >= len(playerPositionsNames) :
+                positionId = random.randint(1, len(playerPositionsNames)) + 2
+            else:
+                positionId = playerId + 3
+            
+            peoples.append(GenerationFunctions.generatePerson(personId, positionId, maleNames, surnames, playerPositionsNames, False))
             
             teamPlayers.append(GenerationFunctions.generateTeamPlayer(personId, teamId))
 
         coachId = len(peoples) + 1
-        peoples.append(GenerationFunctions.generatePerson(coachId, maleNames, surnames, playerPositionsNames, True))
+        peoples.append(GenerationFunctions.generatePerson(coachId, CoachPositionId, maleNames, surnames, playerPositionsNames, True))
         coaches.append(GenerationFunctions.generateCoach(peoples[-1], teamId))
         teamPlayers.append(GenerationFunctions.generateTeamPlayer(coachId, teamId))
 
@@ -83,7 +95,7 @@ def createReferees():
     peoplesCount = len(peoples)
     for refereeCounter in range(REFEREES_NUMBER):
         personId = peoplesCount + 1 + refereeCounter
-        peoples.append(GenerationFunctions.generatePerson(personId, maleNames, surnames, playerPositionsNames, True))
+        peoples.append(GenerationFunctions.generatePerson(personId, RefereePositionId, maleNames, surnames, playerPositionsNames, True))
         referees.append(GenerationFunctions.generateReferee(peoples[-1]))
 
 def createTournaments():
@@ -92,13 +104,12 @@ def createTournaments():
     startDate = GenerationFunctions.randomDate(datetime.date.today() - datetime.timedelta(days=5*365), datetime.date.today() - datetime.timedelta(days=120))
     endDate = startDate + datetime.timedelta(days=65)
 
-    matchesCount = len(matches)
     for matchCounter in range(len(teams)):
         for opponentCounter in range(len(teams)):
             if matchCounter == opponentCounter:
                 continue
             
-            matchId = matchesCount + matchCounter * len(teams) + opponentCounter + 1
+            matchId = len(matches) + 1
             refs = getmatchingReferees()
 
             matches.append(GenerationFunctions.generateMatch(matchId, teams[matchCounter], teams[opponentCounter],

@@ -14,12 +14,12 @@ def generateCities(citiesNames : List[str]):
 
     return citiesList
 
-def generatePerson(personId : int, maleNames : List[str], surnames : List[str], roles : List[str], isOld : bool):
+def generatePerson(personId : int, positionId : int, maleNames : List[str], surnames : List[str], roles : List[str], isOld : bool):
     person = DataStructures.Person()
     person.id = personId
     person.name = random.choice(maleNames)
     person.surname = random.choice(surnames)
-    person.roleId = random.randint(3, len(roles))
+    person.roleId = positionId
 
     age = 0
     if isOld:
@@ -52,10 +52,13 @@ def generatePlayerPositions(positionNames : List[str]):
     
     return positionsList
 
-def generateTeam(teamId : int, teamNames : List[str], cities : List[DataStructures.City]):
+def generateTeam(teamId : int, teamNames : List[str], alreadyUsedTeamNames : List[str], cities : List[DataStructures.City]):
     team = DataStructures.Team()
     team.id = teamId
-    team.name = random.choice(teamNames)
+    chosenName = random.choice(teamNames)
+    while chosenName in alreadyUsedTeamNames:
+        chosenName = random.choice(teamNames)
+    team.name = chosenName
     team.cityId = random.choice(cities).id
 
     return team
